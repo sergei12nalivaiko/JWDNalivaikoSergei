@@ -49,9 +49,13 @@ public class TriangleDAOImpl implements TriangleDAO {
         LOGGER.info(pointList.toString());
 
         for (int i = 0; i < pointList.size(); ) {
-            triangles.add(new Triangle(new TrianglePoint(pointList.get(i), pointList.get(i + 1)),
-                                       new TrianglePoint(pointList.get(i + 2), pointList.get(i + 3)),
-                                       new TrianglePoint(pointList.get(i + 4), pointList.get(i + 5))));
+            Triangle triangle = new Triangle(new TrianglePoint(pointList.get(i), pointList.get(i + 1)),
+                    new TrianglePoint(pointList.get(i + 2), pointList.get(i + 3)),
+                    new TrianglePoint(pointList.get(i + 4), pointList.get(i + 5)));
+            if(validationService.isTriangle(triangle)){
+                triangles.add(triangle);
+            }
+
             i += 6;
         }
         LOGGER.info(triangles.toString());
