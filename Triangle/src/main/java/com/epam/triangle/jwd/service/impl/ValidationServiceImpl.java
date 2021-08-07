@@ -61,8 +61,6 @@ public class ValidationServiceImpl implements ValidationService {
         }
     }
 
-
-
     public static void main(String[] args) throws IOException {
 
         List<Triangle> triangles= provider.getTriangleDAO().create();

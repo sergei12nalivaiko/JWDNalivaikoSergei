@@ -25,6 +25,7 @@ public class TriangleDAOImpl implements TriangleDAO {
 
     private static final String FILENAME = "points.txt";
     private static final Logger LOGGER = LoggerFactory.getLogger("TriangleDAOImpl.class");
+    private  static final String MESSAGE = "file points.txt not exist";
     private List<String> lines = new ArrayList<>();
     private List<Triangle> triangles = new ArrayList<>();
     private Path path = Paths.get(FILENAME);
@@ -56,13 +57,12 @@ public class TriangleDAOImpl implements TriangleDAO {
         LOGGER.info(pointList.toString());
 
         for (int i = 0; i < pointList.size(); ) {
-            Triangle triangle = new Triangle(new TrianglePoint(pointList.get(i), pointList.get(i + 1)),
-                    new TrianglePoint(pointList.get(i + 2), pointList.get(i + 3)),
-                    new TrianglePoint(pointList.get(i + 4), pointList.get(i + 5)));
+            Triangle triangle = new Triangle(new TrianglePoint(pointList.get(i++), pointList.get(i++)),
+                    new TrianglePoint(pointList.get(i++), pointList.get(i++)),
+                    new TrianglePoint(pointList.get(i++), pointList.get(i++)));
             if(validationService.isTriangle(triangle)){
                 triangles.add(triangle);
             }
-            i += 6;
         }
         LOGGER.info(triangles.toString());
         return triangles;
@@ -99,7 +99,7 @@ public class TriangleDAOImpl implements TriangleDAO {
             lines = lineStream.collect(Collectors.toList());
         } else {
             LOGGER.info("file doesn't exist");
-            throw new FilePointsNotExistException("file points.txt not exist");
+            throw new FilePointsNotExistException(MESSAGE);
         }
     }
 }
