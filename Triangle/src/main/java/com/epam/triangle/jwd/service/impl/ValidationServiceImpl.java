@@ -7,7 +7,7 @@ import com.epam.triangle.jwd.service.ValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.IOException;
-
+import java.util.List;
 
 
 public class ValidationServiceImpl implements ValidationService {
@@ -65,6 +65,7 @@ public class ValidationServiceImpl implements ValidationService {
 
     public static void main(String[] args) throws IOException {
 
-        provider.getTriangleDAO().create();
+        List<Triangle> triangles= provider.getTriangleDAO().create();
+        provider.getTriangleDAO().update(triangles.get(0));
     }
 }
