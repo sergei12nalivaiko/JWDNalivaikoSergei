@@ -116,4 +116,9 @@ public class TriangleDAOImpl implements TriangleDAO {
             throw new FilePointsNotExistException(FILE_NOT_EXIST);
         }
     }
+
+    public static void main (String[] args){
+        TriangleDAOImpl triangleDAO = new TriangleDAOImpl();
+        triangleDAO.createListOfTriangles();
+    }
 }
