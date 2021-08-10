@@ -50,9 +50,12 @@ public class ValidationServiceImpl implements ValidationService {
 
         triangleService.perimeter(triangle);
 
-        if((((float)Math.sqrt((Math.pow(triangle.getTriangleSideA(),2) + Math.pow(triangle.getTriangleSideB(),2))) == triangle.getTriangleSideC()) ||
-                (((float)Math.sqrt(Math.pow(triangle.getTriangleSideB(),2) + Math.pow(triangle.getTriangleSideC(),2)) == triangle.getTriangleSideA())) ||
-                (((float)Math.sqrt(Math.pow(triangle.getTriangleSideC(),2) + Math.pow(triangle.getTriangleSideA(),2))== triangle.getTriangleSideB())))){
+        if((((float)Math.sqrt((Math.pow(triangle.getTriangleSideA(),2) + Math.pow(triangle.getTriangleSideB(),2)))
+                == triangle.getTriangleSideC())
+                || (((float)Math.sqrt(Math.pow(triangle.getTriangleSideB(),2) + Math.pow(triangle.getTriangleSideC(),2))
+                == triangle.getTriangleSideA()))
+                || (((float)Math.sqrt(Math.pow(triangle.getTriangleSideC(),2) + Math.pow(triangle.getTriangleSideA(),2))
+                == triangle.getTriangleSideB())))){
                 LOGGER.info("rightTriangle");
                 return true;
         }else{

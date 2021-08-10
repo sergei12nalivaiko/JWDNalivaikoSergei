@@ -22,7 +22,6 @@ public class TriangleServiceImpl implements TriangleService {
         triangle.setPerimeter(triangle.getTriangleSideA() + triangle.getTriangleSideB() + triangle.getTriangleSideC());
     }
 
-
     private void sideLength(Triangle triangle) {
         triangle.setTriangleSideA((float) (Math.sqrt((Math.abs(Math.pow(triangle.getA().getX() - triangle.getB().getX(), 2))) +
                 (Math.abs(Math.pow(triangle.getA().getY() - triangle.getB().getY(), 2))))));
