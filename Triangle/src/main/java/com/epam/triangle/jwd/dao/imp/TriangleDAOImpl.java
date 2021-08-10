@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 
 public class TriangleDAOImpl implements TriangleDAO {
 
-    private static final String FILENAME = "points.txt";
+    private static final String FILENAME = "src/main/resources/points.txt";
     private static final Logger LOGGER = LoggerFactory.getLogger("TriangleDAOImpl.class");
     private static final String FILE_NOT_EXIST = "file points.txt not exist";
     private static final String NULL_EXCEPTION = "triangles is null";

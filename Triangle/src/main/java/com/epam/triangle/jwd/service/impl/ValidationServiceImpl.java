@@ -1,6 +1,7 @@
 package com.epam.triangle.jwd.service.impl;
 
 import com.epam.triangle.jwd.dao.DAOProvider;
+import com.epam.triangle.jwd.dao.imp.TriangleDAOImpl;
 import com.epam.triangle.jwd.entity.Triangle;
 import com.epam.triangle.jwd.service.TriangleService;
 import com.epam.triangle.jwd.service.ValidationService;
