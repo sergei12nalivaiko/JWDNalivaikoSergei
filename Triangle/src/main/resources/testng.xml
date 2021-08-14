@@ -1,9 +1,0 @@
-<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
-
-<suite name="Triangle" verbose="1" >
-    <test name="isTriangle" >
-        <classes>
-            <class name="ValidationServiceImpTest" />
-        </classes>
-    </test>
-</suite>
