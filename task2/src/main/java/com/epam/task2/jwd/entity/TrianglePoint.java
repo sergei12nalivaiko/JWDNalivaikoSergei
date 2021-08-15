@@ -3,18 +3,18 @@ package com.epam.task2.jwd.entity;
 import java.util.Objects;
 
 public class TrianglePoint {
-    private int x;
-    private int y;
+    private Integer x;
+    private Integer y;
 
     public TrianglePoint() {
     }
 
-    public TrianglePoint(int x, int y) {
+    public TrianglePoint(Integer x, Integer y) {
         this.x = x;
         this.y = y;
     }
 
-    public int getX() {
+    public Integer getX() {
         return x;
     }
 
@@ -22,7 +22,7 @@ public class TrianglePoint {
         this.x = x;
     }
 
-    public int getY() {
+    public Integer getY() {
         return y;
     }
 

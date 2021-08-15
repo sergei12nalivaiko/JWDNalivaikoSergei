@@ -12,18 +12,22 @@ import org.slf4j.LoggerFactory;
 public class TriangleObserver implements ShapeObserver {
     private static final Logger LOGGER = LoggerFactory.getLogger("TriangleObserver.class");
 
-    private TriangleServiceImpl triangleService = new TriangleServiceImpl();
+   // private TriangleServiceImpl triangleService = new TriangleServiceImpl();
     private Repository repository = new Repository();
 
     @Override
     public void parameterChanged(ShapeEvent event) {
         repository.createListOfTriangles();
         Triangle triangle = (Triangle) event.getSource();
-        LOGGER.info(triangle.toString());
-        triangleService.perimeter(triangle);
-        triangleService.square(triangle);
-        LOGGER.info(triangle.toString());
+        LOGGER.info("Before update - " + triangle);
+        TriangleServiceImpl.getInstance().perimeter(triangle);
+        TriangleServiceImpl.getInstance().square(triangle);
+       // triangleService.perimeter(triangle);
+        //triangleService.square(triangle);
+
+
         repository.set(triangle.getID() - 1, triangle);
+        LOGGER.info("After update - " + triangle.toString());
         LOGGER.info(repository.getList().toString());
     }
 }

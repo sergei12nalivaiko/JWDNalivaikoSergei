@@ -1,8 +1,11 @@
 package com.epam.task2.jwd.entity;
 
-import com.epam.task2.jwd.repository.PerimeterBetweenSpecification;
 import com.epam.task2.jwd.repository.Repository;
-import com.epam.task2.jwd.repository.Specification;
+import com.epam.task2.jwd.specification.*;
+import com.epam.task2.jwd.specification.impl.AddShapeSpecification;
+import com.epam.task2.jwd.specification.impl.FindByIdSpecification;
+import com.epam.task2.jwd.specification.impl.RemoveSpecification;
+import com.epam.task2.jwd.specification.impl.UpdateSpecification;
 
 public class TriangleFactory {
 
@@ -13,8 +16,8 @@ public class TriangleFactory {
     public static void main(String[] args) {
         Repository repository = new Repository();
         repository.createListOfTriangles();
-        System.out.println(repository.getList().size());
-        Triangle triangle = (Triangle) repository.getList().get(1);
-        triangle.setA(new TrianglePoint(2, 2));
+
+
+
     }
 }

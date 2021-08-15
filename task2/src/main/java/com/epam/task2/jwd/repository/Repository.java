@@ -5,10 +5,11 @@ import com.epam.task2.jwd.entity.Triangle;
 import com.epam.task2.jwd.entity.TriangleFactory;
 import com.epam.task2.jwd.entity.TrianglePoint;
 import com.epam.task2.jwd.exception.FilePointsNotExistException;
-import com.epam.task2.jwd.service.TriangleService;
-import com.epam.task2.jwd.service.ValidationService;
+import com.epam.task2.jwd.exception.IncorrectArgumentException;
 import com.epam.task2.jwd.service.impl.TriangleServiceImpl;
 import com.epam.task2.jwd.service.impl.ValidationServiceImpl;
+import com.epam.task2.jwd.specification.CRUDSpecification;
+import com.epam.task2.jwd.specification.FilterSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,20 +23,18 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Repository<T extends Shape> {
+public class Repository{
     private static final String FILENAME = "src/main/resources/points.txt";
     private static final Logger LOGGER = LoggerFactory.getLogger("TriangleDAOImpl.class");
     private static final String FILE_NOT_EXIST = "file points.txt not exist";
     private static final String NULL_EXCEPTION = "triangles is null";
     private static final String INCORRECT_ID_ARGUMENT = "id incorrect";
     private static final Pattern PATTERN = Pattern.compile("\\b[\\d]+\\b");
+    private static final Path PATH = Paths.get(FILENAME);
     private List<String> lines = new ArrayList<>();
     private List<Integer> pointList = new ArrayList<>();
-    private Path path = Paths.get(FILENAME);
-    private ValidationService validationService = new ValidationServiceImpl();
-    private TriangleService triangleService = new TriangleServiceImpl();
+
     private List<Shape> tList = new ArrayList<>();
-    ;
     private Integer maxId = 0;
 
 
@@ -53,10 +52,10 @@ public class Repository<T extends Shape> {
             Triangle triangle = TriangleFactory.createShape(new TrianglePoint(pointList.get(i++), pointList.get(i++)),
                     new TrianglePoint(pointList.get(i++), pointList.get(i++)),
                     new TrianglePoint(pointList.get(i++), pointList.get(i++)));
-            if (validationService.isTriangle(triangle)) {
-                triangle.setId(++maxId);
-                triangleService.perimeter(triangle);
-                triangleService.square(triangle);
+            if (ValidationServiceImpl.getInstance().isTriangle(triangle)) {
+                triangle.setID(++maxId);
+                TriangleServiceImpl.getInstance().perimeter(triangle);
+                TriangleServiceImpl.getInstance().square(triangle);
                 tList.add(triangle);
             }
         }
@@ -74,8 +73,9 @@ public class Repository<T extends Shape> {
 
     private void readFile() throws FilePointsNotExistException, IOException {
         if (fileExist()) {
-            Stream<String> lineStream = Files.lines(path);
+            Stream<String> lineStream = Files.lines(PATH);
             lines = lineStream.collect(Collectors.toList());
+            LOGGER.debug(lines.toString());
         } else {
             LOGGER.info("file doesn't exist");
             throw new FilePointsNotExistException(FILE_NOT_EXIST);
@@ -84,7 +84,7 @@ public class Repository<T extends Shape> {
 
     private boolean fileExist() {
 
-        if (Files.exists(path)) {
+        if (Files.exists(PATH)) {
             return true;
         } else {
             return false;
@@ -93,7 +93,7 @@ public class Repository<T extends Shape> {
 
     private void validatePoints() {
         for (String s : lines) {
-            if (validationService.isCorrectData(s)) {
+            if (ValidationServiceImpl.getInstance().isCorrectData(s)) {
                 Matcher matcher = PATTERN.matcher(s);
                 while (matcher.find()) {
                     s = matcher.group();
@@ -101,71 +101,44 @@ public class Repository<T extends Shape> {
                 }
             }
         }
+        LOGGER.debug(pointList.toString());
         LOGGER.info(pointList.toString());
     }
 
-    private void rangeCheck(int index) {
-        System.out.println(size());
-        System.out.println(index);
+    private void rangeCheck(int index) throws IncorrectArgumentException {
         if (index >= size()) {
-            throw new IndexOutOfBoundsException();
+            throw new IncorrectArgumentException(INCORRECT_ID_ARGUMENT);
         }
-
     }
 
-    public void set(int index, Triangle element) {
-        rangeCheck(index);
-        tList.remove(index);
-        tList.add(index, element);
+    public void set(int index, Triangle element){
+
+        try {
+            rangeCheck(index);
+            tList.remove(index);
+            tList.add(index, element);
+        } catch (IncorrectArgumentException e) {
+            e.printStackTrace();
+            e.getMessage();
+        }
     }
 
     public List<Shape> getList() {
         return tList;
     }
 
-    public boolean isEmpty() {
-        return tList.isEmpty();
-    }
 
-    public boolean contains(Object o) {
-        return tList.contains(o);
-    }
 
-    public boolean add(Shape shape) {
-        return tList.add(shape);
-    }
-
-    public boolean remove(Object o) {
-        return tList.remove(o);
-    }
-
-    public void sort(Comparator<? super Shape> c) {
-        tList.sort(c);
-    }
-
-    public void clear() {
-        tList.clear();
-    }
-
-    public Shape get(int index) {
-        return tList.get(index);
-    }
-
-    public Shape remove(int index) {
-        return tList.remove(index);
-    }
-
-    public int indexOf(Object o) {
-        return tList.indexOf(o);
-    }
-
-    public int lastIndexOf(Object o) {
-        return tList.lastIndexOf(o);
-    }
-
-    public List<Shape> query(Specification specification) {
+    public List<Shape> query(FilterSpecification specification) {
         List<Shape> list = tList.stream().filter(o -> specification.specify(o)).collect(Collectors.toList());
         LOGGER.info(list.toString());
         return list;
     }
+
+    public List<Shape> CRUDquery(CRUDSpecification crudSpecification) {
+        List<Shape> list = crudSpecification.specify(tList);
+        LOGGER.info(tList.toString());
+        return list;
+    }
+
 }

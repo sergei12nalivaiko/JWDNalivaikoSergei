@@ -11,7 +11,7 @@ import java.util.Objects;
 
 
 public class Triangle implements Shape, Observable {
-    private Integer id;
+    private Integer id = 0;
     private TrianglePoint a;
     private TrianglePoint b;
     private TrianglePoint c;
@@ -33,9 +33,11 @@ public class Triangle implements Shape, Observable {
         return id;
     }
 
-    public void setId(Integer id) {
+    @Override
+    public void setID(Integer id) {
         this.id = id;
     }
+
 
     @Override
     public float getPerimeter() {

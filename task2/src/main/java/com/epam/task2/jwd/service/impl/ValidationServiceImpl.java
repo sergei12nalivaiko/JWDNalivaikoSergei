@@ -1,24 +1,24 @@
 package com.epam.task2.jwd.service.impl;
 
-
-import com.epam.task2.jwd.entity.Shape;
 import com.epam.task2.jwd.entity.Triangle;
-import com.epam.task2.jwd.service.TriangleService;
 import com.epam.task2.jwd.service.ValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.List;
 
 
-public class ValidationServiceImpl implements ValidationService {
+public final class ValidationServiceImpl implements ValidationService {
 
+    private static  final ValidationService INSTANCE = new ValidationServiceImpl();
     private static final Logger LOGGER = LoggerFactory.getLogger("ValidationServiceImpl.class");
     private static final String TEMPLATE = "-?\\d+\\.-?\\d+\\s-?\\d+\\.-?\\d+\\s-?\\d+\\.-?\\d+";
 
-    private TriangleService triangleService = new TriangleServiceImpl();
+    private ValidationServiceImpl() {
+    }
 
+    public static ValidationService getInstance(){
+        return INSTANCE;
+    }
 
     @Override
     public boolean isTriangle(Triangle triangle) {
@@ -58,7 +58,6 @@ public class ValidationServiceImpl implements ValidationService {
         float triangleSideC = ((float) (Math.sqrt((Math.abs(Math.pow(triangle.getA().getX() - triangle.getC().getX(), 2))) +
                 (Math.abs(Math.pow(triangle.getA().getY() - triangle.getC().getY(), 2))))));
 
-        // triangleService.perimeter(triangle);
 
         if ((((float) Math.sqrt((Math.pow(triangleSideA, 2) + Math.pow(triangleSideB, 2)))
                 == triangleSideC)

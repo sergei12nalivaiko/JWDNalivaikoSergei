@@ -4,8 +4,16 @@ import com.epam.task2.jwd.entity.Triangle;
 import com.epam.task2.jwd.service.TriangleService;
 
 
-public class TriangleServiceImpl implements TriangleService {
+public final class TriangleServiceImpl implements TriangleService {
 
+    public static final TriangleService INSTANCE = new TriangleServiceImpl();
+
+    private TriangleServiceImpl() {
+    }
+
+    public static TriangleService getInstance(){
+        return INSTANCE;
+    }
 
     @Override
     public void square(Triangle triangle) {
