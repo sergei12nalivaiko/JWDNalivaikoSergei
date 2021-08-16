@@ -19,15 +19,22 @@ public class AddShapeSpecification implements CRUDSpecification {
 
     @Override
     public List<Shape> specify(List<Shape> shapeList) {
-        Collections.sort(shapeList, new Comparator<Shape>() {
-            @Override
-            public int compare(Shape o1, Shape o2) {
-                return o1.getID().compareTo(o2.getID());
-            }
-        });
-        int id = shapeList.get(shapeList.size() - 1).getID() + 1;
-        newShape.setID(id);
-        shapeList.add(newShape);
+        if(shapeList.size()>2){
+            Collections.sort(shapeList, new Comparator<Shape>() {
+                @Override
+                public int compare(Shape o1, Shape o2) {
+                    return o1.getID().compareTo(o2.getID());
+                }
+            });
+            int id = shapeList.get(shapeList.size() - 1).getID() + 1;
+            newShape.setID(id);
+            shapeList.add(newShape);
+        }else{
+            shapeList.add(newShape);
+            newShape.setID(shapeList.size());
+        }
+
+
         TriangleServiceImpl.getInstance().perimeter((Triangle) newShape);
         TriangleServiceImpl.getInstance().square((Triangle) newShape);
         return shapeList;

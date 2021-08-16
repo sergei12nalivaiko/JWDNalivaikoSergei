@@ -125,8 +125,7 @@ public class Triangle implements Shape, Observable {
     @Override
     public void notifyObservers() {
         ShapeEvent shapeEvent = new ShapeEvent(this);
-        TriangleObserver triangleObserver = new TriangleObserver();
-        attach(triangleObserver);
+        attach(TriangleObserver.getInstance());
         for (ShapeObserver shapeObserver : observerList) {
             observerList.forEach(o -> o.parameterChanged(shapeEvent));
         }

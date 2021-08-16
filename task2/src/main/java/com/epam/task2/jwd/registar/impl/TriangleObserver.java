@@ -9,11 +9,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class TriangleObserver implements ShapeObserver {
+public  final class TriangleObserver implements ShapeObserver {
+    private static final ShapeObserver INSTANCE = new TriangleObserver();
     private static final Logger LOGGER = LoggerFactory.getLogger("TriangleObserver.class");
+    private final Repository repository = new Repository();
 
-   // private TriangleServiceImpl triangleService = new TriangleServiceImpl();
-    private Repository repository = new Repository();
+    private TriangleObserver() {
+    }
+
+    public static ShapeObserver getInstance(){
+        return INSTANCE;
+    }
 
     @Override
     public void parameterChanged(ShapeEvent event) {
@@ -22,12 +28,8 @@ public class TriangleObserver implements ShapeObserver {
         LOGGER.info("Before update - " + triangle);
         TriangleServiceImpl.getInstance().perimeter(triangle);
         TriangleServiceImpl.getInstance().square(triangle);
-       // triangleService.perimeter(triangle);
-        //triangleService.square(triangle);
-
-
         repository.set(triangle.getID() - 1, triangle);
-        LOGGER.info("After update - " + triangle.toString());
+        LOGGER.info("After update - " + triangle);
         LOGGER.info(repository.getList().toString());
     }
 }

@@ -5,14 +5,12 @@ import com.epam.task2.jwd.entity.Triangle;
 import com.epam.task2.jwd.entity.TriangleFactory;
 import com.epam.task2.jwd.entity.TrianglePoint;
 import com.epam.task2.jwd.exception.FilePointsNotExistException;
-import com.epam.task2.jwd.exception.IncorrectArgumentException;
 import com.epam.task2.jwd.service.impl.TriangleServiceImpl;
 import com.epam.task2.jwd.service.impl.ValidationServiceImpl;
 import com.epam.task2.jwd.specification.CRUDSpecification;
 import com.epam.task2.jwd.specification.FilterSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,18 +23,20 @@ import java.util.stream.Stream;
 
 public class Repository{
     private static final String FILENAME = "src/main/resources/points.txt";
-    private static final Logger LOGGER = LoggerFactory.getLogger("TriangleDAOImpl.class");
+    private static final Logger LOGGER = LoggerFactory.getLogger("Repository.class");
     private static final String FILE_NOT_EXIST = "file points.txt not exist";
-    private static final String NULL_EXCEPTION = "triangles is null";
-    private static final String INCORRECT_ID_ARGUMENT = "id incorrect";
+    //private static final String NULL_EXCEPTION = "triangles is null";
+    //private static final String INCORRECT_ID_ARGUMENT = "id incorrect";
     private static final Pattern PATTERN = Pattern.compile("\\b[\\d]+\\b");
     private static final Path PATH = Paths.get(FILENAME);
     private List<String> lines = new ArrayList<>();
-    private List<Integer> pointList = new ArrayList<>();
-
-    private List<Shape> tList = new ArrayList<>();
+    private final List<Integer> pointList = new ArrayList<>();
+    private final List<Shape> tList = new ArrayList<>();
     private Integer maxId = 0;
 
+    public List<Shape> getList() {
+        return tList;
+    }
 
     public int size() {
         return tList.size();
@@ -46,6 +46,7 @@ public class Repository{
 
         read();
         validatePoints();
+        tList.clear();
 
         for (int i = 0; i < pointList.size(); ) {
 
@@ -105,29 +106,17 @@ public class Repository{
         LOGGER.info(pointList.toString());
     }
 
-    private void rangeCheck(int index) throws IncorrectArgumentException {
+    private void rangeCheck(int index){
         if (index >= size()) {
-            throw new IncorrectArgumentException(INCORRECT_ID_ARGUMENT);
+            throw new IndexOutOfBoundsException();
         }
     }
 
     public void set(int index, Triangle element){
-
-        try {
             rangeCheck(index);
             tList.remove(index);
             tList.add(index, element);
-        } catch (IncorrectArgumentException e) {
-            e.printStackTrace();
-            e.getMessage();
-        }
     }
-
-    public List<Shape> getList() {
-        return tList;
-    }
-
-
 
     public List<Shape> query(FilterSpecification specification) {
         List<Shape> list = tList.stream().filter(o -> specification.specify(o)).collect(Collectors.toList());
