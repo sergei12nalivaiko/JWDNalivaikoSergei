@@ -7,9 +7,4 @@ public class TriangleFactory {
     public static Triangle createShape(TrianglePoint a, TrianglePoint b, TrianglePoint c) {
         return new Triangle(a, b, c);
     }
-
-    public static void main(String[] args) {
-        Repository repository = new Repository();
-        repository.createListOfTriangles();
-    }
 }
