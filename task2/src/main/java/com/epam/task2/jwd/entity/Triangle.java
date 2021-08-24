@@ -7,7 +7,6 @@ import com.epam.task2.jwd.registar.impl.TriangleObserver;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 public class Triangle implements Shape, Observable {
@@ -85,17 +84,31 @@ public class Triangle implements Shape, Observable {
         this.perimeter = perimeter;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Triangle triangle = (Triangle) o;
-        return Float.compare(triangle.square, square) == 0 && Float.compare(triangle.perimeter, perimeter) == 0 && id.equals(triangle.id) && a.equals(triangle.a) && b.equals(triangle.b) && c.equals(triangle.c);
+
+        if (Float.compare(triangle.square, square) != 0) return false;
+        if (Float.compare(triangle.perimeter, perimeter) != 0) return false;
+        if (!id.equals(triangle.id)) return false;
+        if (!a.equals(triangle.a)) return false;
+        if (!b.equals(triangle.b)) return false;
+        return c.equals(triangle.c);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, a, b, c, square, perimeter);
+        int result = id.hashCode();
+        result = 31 * result + a.hashCode();
+        result = 31 * result + b.hashCode();
+        result = 31 * result + c.hashCode();
+        result = 31 * result + (square != +0.0f ? Float.floatToIntBits(square) : 0);
+        result = 31 * result + (perimeter != +0.0f ? Float.floatToIntBits(perimeter) : 0);
+        return result;
     }
 
     @Override
